@@ -1,6 +1,7 @@
 #pragma once
 #include <GLSLParserBaseVisitor.h>
 #include <vector>
+#include <optional>
 
 enum class GLSLProfile {
   CORE,
