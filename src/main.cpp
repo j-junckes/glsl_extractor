@@ -24,7 +24,7 @@ std::string getFileContents(const std::filesystem::path &path) {
 }
 
 int main(int argc, char *argv[]) {
-  argparse::ArgumentParser program("glsl_to_cpp", versionString.data());
+  argparse::ArgumentParser program("glslextractor", versionString.data());
 
   program.add_argument("vertex_file")
       .help("Vertex shader file")
