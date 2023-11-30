@@ -28,10 +28,12 @@ execute_process(
 )
 
 if (GIT_TAG_NAME STREQUAL "")
-  set(GIT_TAG_NAME "0.0.0")
+  set(GIT_TAG_NAME "v0.0.0")
 endif ()
 
-project(glsl_extractor VERSION ${GIT_TAG_NAME} LANGUAGES CXX)
+string(SUBSTRING ${GIT_TAG_NAME} 1 -1 PROJECT_CMAKE_VERSION_FROM_GIT)
+
+project(glsl_extractor VERSION ${PROJECT_CMAKE_VERSION_FROM_GIT} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 
