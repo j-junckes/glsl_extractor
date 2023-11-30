@@ -1,4 +1,12 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.0)
+
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 set(ANTLR4_VERSION "4.13.1" CACHE STRING "Specify the version of ANTLR4 to download")
 
@@ -84,16 +92,6 @@ antlr_target(GLSLParser ${CMAKE_CURRENT_SOURCE_DIR}/parser/GLSLParser.g4 PARSER
   VISITOR
 )
 
-set(GLSLParser_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/include)
-
-file(MAKE_DIRECTORY ${GLSLParser_INCLUDE_DIRS}/parser)
-
-file(GLOB GLSLParser_Headers ${ANTLR_GLSLLexer_OUTPUT_DIR}/*.h ${ANTLR_GLSLParser_OUTPUT_DIR}/*.h)
-
-foreach (GLSLParser_Header ${GLSLParser_Headers})
-  file(COPY ${GLSLParser_Header} DESTINATION ${GLSLParser_INCLUDE_DIRS}/parser)
-endforeach ()
-
 add_library(glsl_extractor_lib
   ${ANTLR_GLSLLexer_CXX_OUTPUTS}
   ${ANTLR_GLSLParser_CXX_OUTPUTS}
@@ -102,7 +100,8 @@ add_library(glsl_extractor_lib
 )
 
 target_include_directories(glsl_extractor_lib PRIVATE
-  ${GLSLParser_INCLUDE_DIRS}
+  ${ANTLR_GLSLLexer_OUTPUT_DIR}
+  ${ANTLR_GLSLParser_OUTPUT_DIR}
   ${ANTLR4_INCLUDE_DIRS}
   ${THIRD_PARTY_DIR}/json/include
   PUBLIC
@@ -135,6 +134,8 @@ export(EXPORT glsl_extractor_libTargets
   NAMESPACE glsl_extractor_lib::
 )
 
+set_target_properties(glsl_extractor_lib PROPERTIES OUTPUT_NAME "glslextractor")
+
 add_compile_definitions(GLSL_EXTRACTOR_WITH_NLOHMANN_JSON)
 
 add_executable(glsl_extractor
@@ -153,3 +154,5 @@ target_link_libraries(glsl_extractor
 install(TARGETS glsl_extractor
   RUNTIME DESTINATION bin
 )
+
+set_target_properties(glsl_extractor PROPERTIES OUTPUT_NAME "glslextractor")

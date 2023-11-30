@@ -1,7 +1,7 @@
 #include "GLSLExporterVisitor.hpp"
 #include <GLSLExtractor.hpp>
-#include <parser/GLSLLexer.h>
-#include <parser/GLSLParser.h>
+#include <GLSLLexer.h>
+#include <GLSLParser.h>
 #ifndef EOF
 #define EOF (-1)
 #endif

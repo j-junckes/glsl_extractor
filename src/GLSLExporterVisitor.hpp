@@ -1,5 +1,5 @@
 #pragma once
-#include <parser/GLSLParserBaseVisitor.h>
+#include <GLSLParserBaseVisitor.h>
 #include <vector>
 
 enum class GLSLProfile {
