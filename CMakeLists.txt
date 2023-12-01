@@ -124,7 +124,7 @@ install(TARGETS glsl_extractor_lib EXPORT glsl_extractor_libTargets
   RUNTIME DESTINATION bin
 )
 
-install(DIRECTORY ${GLSLParser_INCLUDE_DIRS}/
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
   DESTINATION include
 )
 
@@ -162,5 +162,5 @@ install(TARGETS glsl_extractor
 
 set_target_properties(glsl_extractor PROPERTIES OUTPUT_NAME "glslextractor")
 
-install(FILES ${CMAKE_SOURCE_DIR}/LICENSE DESTINATION ${CMAKE_INSTALL_PREFIX})
+#install(FILES ${CMAKE_SOURCE_DIR}/LICENSE DESTINATION ${CMAKE_INSTALL_PREFIX})
 
