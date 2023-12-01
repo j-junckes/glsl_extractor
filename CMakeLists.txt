@@ -92,6 +92,11 @@ antlr_target(GLSLParser ${CMAKE_CURRENT_SOURCE_DIR}/parser/GLSLParser.g4 PARSER
   VISITOR
 )
 
+include(FetchContent)
+
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
+FetchContent_MakeAvailable(json)
+
 add_library(glsl_extractor_lib
   ${ANTLR_GLSLLexer_CXX_OUTPUTS}
   ${ANTLR_GLSLParser_CXX_OUTPUTS}
@@ -103,14 +108,14 @@ target_include_directories(glsl_extractor_lib PRIVATE
   ${ANTLR_GLSLLexer_OUTPUT_DIR}
   ${ANTLR_GLSLParser_OUTPUT_DIR}
   ${ANTLR4_INCLUDE_DIRS}
-  ${THIRD_PARTY_DIR}/json/include
   PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(glsl_extractor_lib
+target_link_libraries(glsl_extractor_lib PRIVATE
   antlr4_static
+  nlohmann_json::nlohmann_json
 )
 
 install(TARGETS glsl_extractor_lib EXPORT glsl_extractor_libTargets
@@ -123,16 +128,16 @@ install(DIRECTORY ${GLSLParser_INCLUDE_DIRS}/
   DESTINATION include
 )
 
-install(EXPORT glsl_extractor_libTargets
-  FILE glsl_extractor_libConfig.cmake
-  NAMESPACE glsl_extractor_lib::
-  DESTINATION lib/cmake/glsl_extractor_lib
-)
+#install(EXPORT glsl_extractor_libTargets
+#  FILE glsl_extractor_libConfig.cmake
+#  NAMESPACE glsl_extractor_lib::
+#  DESTINATION lib/cmake/glsl_extractor_lib
+#)
 
-export(EXPORT glsl_extractor_libTargets
-  FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/glsl_extractor_libConfig.cmake"
-  NAMESPACE glsl_extractor_lib::
-)
+#export(EXPORT glsl_extractor_libTargets
+#  FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/glsl_extractor_libConfig.cmake"
+#  NAMESPACE glsl_extractor_lib::
+#)
 
 set_target_properties(glsl_extractor_lib PROPERTIES OUTPUT_NAME "glslextractor")
 
@@ -144,11 +149,11 @@ add_executable(glsl_extractor
 
 target_include_directories(glsl_extractor PRIVATE
   ${THIRD_PARTY_DIR}/argparse/include
-  ${THIRD_PARTY_DIR}/json/include
 )
 
-target_link_libraries(glsl_extractor
-  PRIVATE glsl_extractor_lib
+target_link_libraries(glsl_extractor PRIVATE
+  glsl_extractor_lib
+  nlohmann_json::nlohmann_json
 )
 
 install(TARGETS glsl_extractor
