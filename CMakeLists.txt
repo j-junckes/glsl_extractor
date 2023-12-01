@@ -156,3 +156,6 @@ install(TARGETS glsl_extractor
 )
 
 set_target_properties(glsl_extractor PROPERTIES OUTPUT_NAME "glslextractor")
+
+install(FILES ${CMAKE_SOURCE_DIR}/LICENSE DESTINATION ${CMAKE_INSTALL_PREFIX})
+
